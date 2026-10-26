@@ -13,6 +13,8 @@
 #define ROVER1_ADDR 0x12
 #define KIOSK2_ADDR 0x21
 #define ROVER2_ADDR 0x22
+#define KIOSK_DEBUG_ADDR 0x31
+#define ROVER_DEBUG_ADDR 0x32
 int rover_addr, kiosk_addr;
 
 
@@ -114,7 +116,7 @@ class Radio : public RadioSerial {
 
 		// check if command_buf is the right length
 		if (strlen(commands_buf) != 8) {
-			Serial.print("WARNING: malformed command buffer: "); Serial.println(commands_buf);
+			Serial.print(F("WARNING: malformed command buffer: ")); Serial.println(commands_buf);
 			return false;
 		}
 
@@ -208,15 +210,15 @@ class Radio : public RadioSerial {
 void setup() {
 	Serial.begin(115200);
 	Serial.println();
-	Serial.println("===== boot =====");
+	Serial.println(F("===== boot ====="));
 
 	wheels.setup();
 
 	Serial.println(sizeof(Radio));
 
-	Serial.println("configuring radio...");
+	Serial.println(F("configuring radio..."));
 	radio.setup();
-	Serial.println("done!");
+	Serial.println(F("done!"));
 
 	// choose address based on kiosk select switch
 	pinMode(KIOSK_SELECT, INPUT_PULLUP);
@@ -228,8 +230,8 @@ void setup() {
 		kiosk_addr = KIOSK2_ADDR;
 	}
 	radio.set_addrs(rover_addr, kiosk_addr);
-	Serial.print("using rover address 0x"); Serial.println(rover_addr, HEX);
-	Serial.print("expecting transmissions from kiosk address 0x"); Serial.println(kiosk_addr, HEX);
+	Serial.print(F("using rover address 0x")); Serial.println(rover_addr, HEX);
+	Serial.print(F("expecting transmissions from kiosk address 0x")); Serial.println(kiosk_addr, HEX);
 
 	radio.parse_commands("F4B4F4B4");
 	radio.execute();

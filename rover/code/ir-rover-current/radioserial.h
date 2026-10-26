@@ -54,7 +54,7 @@ class RadioSerial {
 
 	void setup() {
 		// reset radio
-		Serial.println("  reset");
+		Serial.println(F("  reset"));
 		pinMode(pin_rst, OUTPUT);
 		digitalWrite(pin_rst, 0);
 		delay(10);
@@ -64,12 +64,12 @@ class RadioSerial {
 		delay(250);
 
 		// initialize & configure radio
-		Serial.println("  init");
+		Serial.println(F("  init"));
 		if (!driver.init()) {
-			Serial.println("radio initialization failed!");
+			Serial.println(F("radio initialization failed!"));
 		}
 
-		Serial.println("  set frequency & power");
+		Serial.println(F("  set frequency & power"));
 		driver.setFrequency(freq);
 		driver.setTxPower(TX_POWER, true);
 		this->radio.setRetries(MAX_RETRIES);
@@ -95,7 +95,7 @@ class RadioSerial {
 		
 		size_t len = strlen(result);
 		if (!radio.sendtoWait((uint8_t*) result, len+1, partner_addr)) {
-			Serial.println("WARNING: radio transmission failed!");
+			Serial.println(F("WARNING: radio transmission failed!"));
 		}
 	}
 	
